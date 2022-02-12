@@ -22,7 +22,6 @@
 'require uci';
 'require form';
 'require rpc';
-'require view';
 
 var conf = 'smartdns';
 var callServiceList = rpc.declare({
@@ -116,7 +115,7 @@ function smartdnsRenderStatus(res) {
 	return renderHTML;
 }
 
-return view.extend({
+return L.view.extend({
 	load: function () {
 		return Promise.all([
 			uci.load('smartdns'),
@@ -386,6 +385,15 @@ return view.extend({
 		o.default = ""
 		o.datatype = "string"
 		o.rempty = true
+		o.modalonly = true;
+		o.depends("type", "tls")
+		o.depends("type", "https")
+
+		// certificate verify
+		o = s.taboption("advanced", form.Flag, "no_check_certificate", _("No check certificate"),
+			_("Do not check certificate."))
+		o.rmempty = false
+		o.default = o.disabled
 		o.modalonly = true;
 		o.depends("type", "tls")
 		o.depends("type", "https")
