@@ -70,7 +70,7 @@ git clone -b lede https://github.com/pymumu/luci-app-smartdns
 git clone --depth 1 https://github.com/esirplayground/LingTiGameAcc
 git clone --depth 1 https://github.com/esirplayground/luci-app-LingTiGameAcc
 git clone --depth 1 https://github.com/zxlhhyccc/luci-app-v2raya
-git clone --depth 1 https://github.com/thinktip/luci-theme-neobird.git
+git clone --depth 1 https://github.com/thinktip/luci-theme-neobird
 
 svn co https://github.com/Lienol/openwrt-package/branches/other/lean/luci-app-autoreboot
 svn co https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus
@@ -114,7 +114,6 @@ svn co https://github.com/kiddin9/openwrt-packages/trunk/UnblockNeteaseMusic
 svn co https://github.com/kiddin9/openwrt-packages/trunk/qtbase
 svn co https://github.com/kiddin9/openwrt-packages/trunk/qttools
 svn co https://github.com/kiddin9/openwrt-packages/trunk/rblibtorrent
-svn co https://github.com/kiddin9/openwrt-packages/trunk/v2raya
 
 svn co https://github.com/linkease/istore/trunk/luci/luci-app-store
 svn co https://github.com/linkease/istore-ui/trunk/app-store-ui
@@ -130,4 +129,3 @@ mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
 rm -rf ./*/.git & rm -f ./*/.gitattributes
 rm -rf ./*/.svn & rm -rf ./*/.github & rm -rf ./*/.gitignore
 exit 0
-
