@@ -3,7 +3,7 @@ function mvdir() {
 mv -n `find $1/* -maxdepth 0 -type d` ./
 rm -rf $1
 }
-git clone --depth 1 https://github.com/kiddin9/my-packages && mvdir my-packages
+git clone --depth 1 https://github.com/kenzok78/my-packages && mvdir my-packages
 git clone --depth 1 https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass
 git clone --depth 1 https://github.com/kiddin9/luci-app-dnsfilter
 git clone --depth 1 https://github.com/kiddin9/aria2
@@ -98,8 +98,6 @@ svn co https://github.com/immortalwrt/openwrt-filebrowser/trunk/filebrowser
 svn co https://github.com/kenzok8/jell/trunk/luci-app-adguardhome
 svn co https://github.com/kenzok8/jell/trunk/adguardhome
 svn co https://github.com/immortalwrt/packages/trunk/net/smartdns
-svn co https://github.com/kenzok8/litte/trunk/luci-theme-argon_new
-svn co https://github.com/kenzok8/litte/trunk/luci-theme-opentopd_new
 svn co https://github.com/kenzok8/litte/trunk/luci-theme-atmaterial_new
 svn co https://github.com/kenzok8/litte/trunk/luci-theme-mcat
 svn co https://github.com/kenzok8/litte/trunk/luci-theme-tomato
