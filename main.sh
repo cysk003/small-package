@@ -42,7 +42,7 @@ git clone --depth 1 https://github.com/4IceG/luci-app-sms-tool smstool && mvdir 
 git clone --depth 1 https://github.com/rufengsuixing/luci-app-usb3disable
 git clone --depth 1 https://github.com/silime/luci-app-xunlei
 git clone --depth 1 https://github.com/ysc3839/luci-proto-minieap
-
+git clone -b lede https://github.com/pymumu/luci-app-smartdns
 
 git clone --depth 1 https://github.com/zzsj0928/luci-app-pushbot
 git clone --depth 1 https://github.com/shanglanxin/luci-app-homebridge
@@ -94,7 +94,7 @@ svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos
 svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
 svn co https://github.com/lisaac/luci-app-dockerman/trunk/applications/luci-app-dockerman
 svn co https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest/trunk/applications/luci-app-cloudflarespeedtest
-
+svn co https://github.com/kenzok8/jell/trunk/luci-app-adguardhome
 
 svn co https://github.com/doushang/luci-app-shortcutmenu/trunk/luci-app-shortcutmenu
 svn co https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-iperf
