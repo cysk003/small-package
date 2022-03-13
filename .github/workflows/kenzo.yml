@@ -59,6 +59,9 @@ jobs:
         cd $GITHUB_WORKSPACE/${{matrix.target}}
         git add .
         git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
+        git reset --soft HEAD^
+        git add .
+        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
         git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/kenzok78/small-package.git" HEAD:${{matrix.target}}
         
     - name: Delete workflow runs
