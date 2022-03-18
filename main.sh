@@ -109,6 +109,7 @@ svn co https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openw
 svn co https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
 svn co https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
 svn co https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-snmpd
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-filebrowser
 
 git_sparse_clone master "https://github.com/coolsnowwolf/packages" "leanpkg" net/miniupnpd net/mwan3 multimedia/UnblockNeteaseMusic-Go \
 multimedia/UnblockNeteaseMusic net/amule net/baidupcs-web multimedia/gmediarender net/go-aliyundrive-webdav \
