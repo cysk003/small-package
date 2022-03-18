@@ -118,6 +118,7 @@ net/uugamebooster net/microsocks net/tcpping net/redsocks2
 git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/smartdns \
 net/dnsproxy net/haproxy net/v2raya net/cdnspeedtest net/gost net/gowebdav \
 admin/bpytop libs/jpcre2 libs/wxbase libs/rapidjson libs/libcron libs/quickjspp libs/toml11 \
+utils/cpulimit utils/filebrowser
 
 mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
 mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
