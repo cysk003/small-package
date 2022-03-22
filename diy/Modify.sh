@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # --------------------------------------------------------
 # Script for creating ACL file for each LuCI APP
