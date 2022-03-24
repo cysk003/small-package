@@ -100,6 +100,7 @@ git clone --depth 1 https://github.com/kenzok78/luci-app-argonne-config
 git clone --depth 1 -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1
 
 svn export https://github.com/kiddin9/openwrt-packages/trunk/luci-app-diskman
+svn export https://github.com/kiddin9/openwrt-packages/trunk/vsftpd-alt
 svn export https://github.com/Lienol/openwrt-package/branches/other/lean/luci-app-autoreboot
 svn export https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus
 svn export https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns
