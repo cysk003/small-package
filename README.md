@@ -41,7 +41,8 @@
 git clone https://github.com/kenzok78/small-package package/small-package
 ```
 
-| software name                | illustrate               | Chinese description       |
+| -----------------------------|------------------------| ------------|
+| 软件名                       | 说明                   | 中文说明    |
 | -----------------------------|------------------------| ------------|
 | luci-app-vssr                | vssr proxy                 | vssr老竭力代理软件        |
 | luci-app-dnsfilter           | dns ad filtering            | 基于DNS的广告过滤        |
