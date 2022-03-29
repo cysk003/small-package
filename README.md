@@ -40,3 +40,27 @@
 ```bash
 git clone https://github.com/kenzok78/small-package package/small-package
 ```
+
+| software name                | illustrate               | Cool         |
+| -----------------------------|:------------------------:| ------------:|
+| luci-app-vssr                | vssr proxy                 | $1600        |
+| luci-app-dnsfilter           | dns ad filtering            |   $12        |
+| luci-app-openclash           | openclash proxy            |    $1        |
+| luci-app-advanced            | System advanced settings               | $1600        |
+| luci-app-pushbot             | WeChat/DingTalk Pushed plugins    |   $12        |
+| luci-theme-ifit              | Transparent theme (adapted to 18.06 to fix hostname error)|    $1        |
+| luci-theme-atmaterial_new    | atmaterial three-in-one theme (adapted to luci-18.06) | $1600        |
+| luci-app-aliddns             | aliyunddns         |   $12        |
+| luci-app-eqos                | Speed ​​limit by IP address       |    $1        |
+| luci-app-gost                | https proxy      | $1600        |
+| luci-app-adguardhome         | Block ads          |   $12        |
+| luci-app-smartdns            | smartdns dns pollution prevention     |    $1        |
+| luci-app-passwall            | passwall proxy      | $1600        |
+| luci-theme-argonne           | argonne theme           |   $12        |
+| luci-app-argonne-config      | argonne theme settings            |    $1        |
+| luci-app-ssr-plus            | ssr-plus proxy              | $1600        |
+| luci-theme-mcat              | Modify topic name          |   $12        |
+| luci-theme-tomato            | Modify topic name             |    $1        |
+| luci-theme-neobird           | neobird theme          | $1600        |
+| luci-app-mosdns              | moddns dns offload            |   $12        |
+| luci-app-store               | store software repository            |    $1        |
