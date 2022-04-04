@@ -83,7 +83,6 @@ git clone --depth 1 https://github.com/CCnut/feed-netkeeper && mvdir feed-netkee
 git clone --depth 1 https://github.com/sensec/luci-app-udp2raw
 git clone --depth 1 https://github.com/LGA1150/openwrt-sysuh3c && mvdir openwrt-sysuh3c
 git clone --depth 1 https://github.com/gdck/luci-app-cupsd cupsd1 && mv -n cupsd1/luci-app-cupsd cupsd1/cups/cups ./ ; rm -rf cupsd1
-git clone --depth 1 https://github.com/QiuSimons/openwrt-mos && mvdir openwrt-mos
 git clone --depth 1 https://github.com/sundaqiang/openwrt-packages && mv -n openwrt-packages/luci-* ./; rm -rf openwrt-packages
 git clone --depth 1 https://github.com/zxlhhyccc/luci-app-v2raya
 git clone --depth 1 https://github.com/kenzok78/openwrt-minisign
@@ -106,6 +105,10 @@ svn co https://github.com/x-wrt/packages/trunk/net/nft-qos
 svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos
 svn co https://github.com/kiddin9/openwrt-packages/trunk/luci-app-diskman
 svn co https://github.com/kiddin9/openwrt-packages/trunk/vsftpd-alt
+svn co https://github.com/kiddin9/openwrt-packages/trunk/luci-app-mosdns
+svn co https://github.com/kiddin9/openwrt-packages/trunk/dat
+svn co https://github.com/kiddin9/openwrt-packages/trunk/v2ray-geodata
+svn co https://github.com/kiddin9/openwrt-packages/trunk/mosdns
 svn co https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openwrt
 svn co https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
 svn co https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive && mvdir aliyundrive
