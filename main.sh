@@ -1,7 +1,8 @@
 #!/bin/bash
-shopt -s extglobgit rm -r --cache * >/dev/null 2>&1 &
+shopt -s extglob
+git rm -r --cache * >/dev/null 2>&1 &
 rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
-function git_sparse_clone() {
+function git_sparse_clone() (
 branch="$1" rurl="$2" localdir="$3" && shift 3
 git clone -b $branch --depth 1 --filter=blob:none --sparse $rurl $localdir
 cd $localdir
@@ -10,12 +11,11 @@ git sparse-checkout set $@
 mv -n $@ ../
 cd ..
 rm -rf $localdir
-}
+)
 function mvdir() {
 mv -n `find $1/* -maxdepth 0 -type d` ./
 rm -rf $1
 }
-
 
 git clone --depth 1 https://github.com/kenzok78/my-packages && mvdir my-packages
 git clone --depth 1 https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass
