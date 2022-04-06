@@ -1,6 +1,7 @@
 module("luci.controller.fileassistant", package.seeall)
 
 function index()
+	entry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false
 
     entry({"admin", "nas"}, firstchild(), "NAS", 44).dependent = false
 
@@ -8,6 +9,7 @@ function index()
     page = entry({"admin", "nas", "fileassistant"}, template("fileassistant"), _("文件助手"), 1)
     page.i18n = "base"
     page.dependent = true
+    page.acl_depends = { "luci-app-fileassistant" }
 
     page = entry({"admin", "nas", "fileassistant", "list"}, call("fileassistant_list"), nil)     
     page.leaf = true
