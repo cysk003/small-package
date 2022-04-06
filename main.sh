@@ -152,10 +152,13 @@ git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "21packages
 net/openvpn utils/cgroupfs-mount utils/coremark net/xray-core net/nginx net/uwsgi net/ddns-scripts admin/netdata
 git_sparse_clone openwrt-21.02 "https://github.com/openwrt/openwrt" "21openwrt" package/libs/mbedtls \
 
-
 mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
+mv -n applications/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf applications
+mv -n lean/* ./ ; rm -Rf lean
 mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
+cp -rf diy/.packages/* ./ || true
 
+rm -Rf */.git
 rm -rf ./*/.git & rm -f ./*/.gitattributes
 rm -rf ./*/.svn & rm -rf ./*/.github & rm -rf ./*/.gitignore
 
