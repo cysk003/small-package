@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=baidupcs-web
 PKG_VERSION:=3.7.4-nnew
-PKG_RELEASE:=
+PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/Erope/BaiduPCS-Go.git
-PKG_SOURCE_VERSION:=null
+PKG_SOURCE_VERSION:=cffd49d0709f9c7d3dd6ae5c9625f68bfd446166
 PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=Apache-2.0

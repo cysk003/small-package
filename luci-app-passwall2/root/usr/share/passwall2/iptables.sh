@@ -347,14 +347,8 @@ load_acl() {
 	}
 
 	#  加载默认代理模式
-	local ipt_tmp=$ipt_n
 	if [ "$TCP_PROXY_MODE" != "disable" ]; then
-		[ "$TCP_NO_REDIR_PORTS" != "disable" ] && {
-			$ipt_tmp -A PSW2 $(comment "默认") -p tcp -m multiport --dport $TCP_NO_REDIR_PORTS -j RETURN
-			$ip6t_m -A PSW2 $(comment "默认") -p tcp -m multiport --dport $TCP_NO_REDIR_PORTS -j RETURN
-		}
-
-		ipt_tmp=$ipt_n
+		local ipt_tmp=$ipt_n
 		[ "$NODE" != "nil" ] && {
 			msg="TCP默认代理：使用节点[$(config_n_get $NODE remarks)] [$(get_action_chain_name $TCP_PROXY_MODE)]"
 			if [ -n "${is_tproxy}" ]; then
@@ -363,10 +357,14 @@ load_acl() {
 			else
 				msg="${msg}(REDIRECT:${REDIR_PORT})代理"
 			fi
-			
-			[ "$TCP_NO_REDIR_PORTS" != "disable" ] && msg="${msg}除${TCP_NO_REDIR_PORTS}外的"
+
+			[ "$TCP_NO_REDIR_PORTS" != "disable" ] && {
+				$ipt_tmp -A PSW2 $(comment "默认") -p tcp -m multiport --dport $TCP_NO_REDIR_PORTS -j RETURN
+				$ip6t_m -A PSW2 $(comment "默认") -p tcp -m multiport --dport $TCP_NO_REDIR_PORTS -j RETURN
+				msg="${msg}除${TCP_NO_REDIR_PORTS}外的"
+			}
 			msg="${msg}所有端口"
-			
+
 			$ipt_tmp -A PSW2 $(comment "默认") -p tcp -d $FAKE_IP $(REDIRECT $REDIR_PORT $is_tproxy)
 			$ipt_tmp -A PSW2 $(comment "默认") -p tcp $(factor $TCP_REDIR_PORTS "-m multiport --dport") $(REDIRECT $REDIR_PORT $is_tproxy)
 
@@ -549,7 +547,7 @@ add_firewall_rule() {
 
 	# 忽略特殊IP段
 	local lan_ifname lan_ip
-	lan_ifname=$(uci -q -p /tmp/state get network.lan.device)
+	lan_ifname=$(uci -q -p /tmp/state get network.lan.ifname)
 	[ -n "$lan_ifname" ] && {
 		lan_ip=$(ip address show $lan_ifname | grep -w "inet" | awk '{print $2}')
 		lan_ip6=$(ip address show $lan_ifname | grep -w "inet6" | awk '{print $2}')

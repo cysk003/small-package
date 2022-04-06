@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=mtk-eip93
-PKG_RELEASE:=
+PKG_RELEASE:=1.3
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_DATE:=2020-12-10
 PKG_SOURCE_URL:=https://github.com/vschagen/mtk-eip93.git
-PKG_SOURCE_VERSION:=null
+PKG_SOURCE_VERSION:=bb5fd1c88a8a74de06b70c281bceeb14d0d960ef
 PKG_MIRROR_HASH:=skip
 
 MAKE_PATH:=src
