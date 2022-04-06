@@ -1,4 +1,5 @@
 name: Update packages
+
 on:
   push:
     paths:
@@ -14,6 +15,12 @@ jobs:
   build:
     runs-on: Ubuntu-20.04
 
+    name: Update ${{matrix.target}}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [main]
+        
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -25,7 +32,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
-
+        
     - name: Clone packages
       run: |
         shopt -s extglob
@@ -150,9 +157,9 @@ jobs:
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
-        net/openvpn utils/cgroupfs-mount utils/coremark net/xray-core net/nginx net/uwsgi net/ddns-scripts admin/netdata
+        utils/coremark net/xray-core net/nginx net/uwsgi admin/netdata
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/openwrt" "openwrt" \
-        package/base-files package/network/config/firewall package/system/opkg package/libs/mbedtls package/network/services/ppp package/network/services/dnsmasq
+        package/base-files package/network/config/firewall package/system/opkg package/libs/mbedtls
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/luci" "opluci" applications/luci-app-attendedsysupgrade applications/luci-app-aria2 \
         applications/luci-app-ddns applications/luci-app-acme applications/luci-app-transmission applications/luci-app-opkg applications/luci-app-firewall \
         applications/luci-app-ksmbd applications/luci-app-samba4 modules/luci-base modules/luci-mod-network \
@@ -171,7 +178,7 @@ jobs:
         git_sparse_clone master "https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng" "xiaoqingfeng" homeredirect luci-app-homeredirect
         ) &
         (
-        git_sparse_clone master "https://github.com/coolsnowwolf/packages" "leanpkg" net/miniupnpd net/mwan3 multimedia/UnblockNeteaseMusic-Go \
+        git_sparse_clone master "https://github.com/coolsnowwolf/packages" "leanpkg" multimedia/UnblockNeteaseMusic-Go \
         multimedia/UnblockNeteaseMusic net/amule net/baidupcs-web net/frp multimedia/gmediarender net/go-aliyundrive-webdav \
         net/qBittorrent-static net/qBittorrent libs/qtbase libs/qttools libs/rblibtorrent \
         net/uugamebooster net/verysync net/vlmcsd net/dnsforwarder net/nps net/tcpping net/redsocks2
@@ -197,120 +204,25 @@ jobs:
         cp -rf diy/.packages/* ./ || true
         rm -Rf */.git
 
-    - name: Tidy
-      run: |
-        shopt -s extglob
-        sed -i \
-        -e "s/\(network\..*\)\.ifname/\1.device/g" \
-        `find \( -path "*/root/*" -o -path "*/files/*" -o -path "*/luasrc/*" \) ! -path "./base-files/*" ! -path "./dnsmasq/*" ! -path "./luci-base/*" ! -path "./ppp/*" -type f` &
-        (
-        function latest() {
-          (curl -gs -H 'Content-Type: application/json' \
-             -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
-             -X POST -d '{ "query": "query {repository(owner: \"'"$1"'\", name: \"'"$2"'\"){refs(refPrefix:\"refs/tags/\",last:1,orderBy:{field:TAG_COMMIT_DATE,direction:ASC}){edges{node{name target{commitUrl}}}}defaultBranchRef{target{...on Commit {oid}}}}}"}' https://api.github.com/graphql)
-        }
-        for pkg in $(ls !(luci-*|natflow|ps3netsrv|rblibtorrent|shadowsocksr-libev|v2ray-core|n2n_v2|mosdns|coremark|mbedtls|rtl8821cu|rtl8188eu|rtl8812au-ac|quickjspp|libcups|netdata)/Makefile); do
-          repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
-          if [ "$repo" ]; then
-            owner="$(echo $repo | cut -f 1 -d '/')"
-            name="$(echo $repo | cut -f 2 -d '/')"
-            latest="$(latest $owner $name)"
-            sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$(echo $latest | jq -r '.data.repository.defaultBranchRef.target.oid')/" $pkg || true
-            over="$(grep -E PKG_VERSION:=.*$ $pkg | cut -f 2 -d '=' | sed -e 's/^\(v\|release-\)//' | grep -E "[0-9]")" || true
-            if [ "$over" ]; then
-              ver="$(echo $latest | jq -r '.data.repository.refs.edges[-1].node.name' | sed -e 's/^\(v\|release-\)//' | grep -E "^[^()]*$" | grep -E "[0-9]")" || true
-              # [ "$ver" ] || ver="$(git ls-remote --tags git://github.com/$repo | cut -d/ -f3- | sort -t. -nk1,3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].*")" || true
-              echo "$repo-$over-$ver"
-              if [ "$ver" ]; then
-                function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
-                if version_lt "$over" "$ver"; then
-                  sed -i -e "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$(echo $latest | jq -r '.data.repository.refs.edges[-1].node.target.commitUrl' | cut -f 7 -d /)/" \
-                         -e "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/" $pkg || true
-                fi || true
-              fi
-            fi
-          fi
-        done
-        touch /tmp/ok
-        ) &
-        
-        for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
-          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
-            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
-          fi
-          grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
-            sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
-        done
-        (
-        for pkg in $(ls -d */); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done
-        touch /tmp/ok2
-        ) &
-
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
-        
-        #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
-        rm -f miniupnpd/patches/106-spam-syslog*
-        sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
-        sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
-        sed -i 's/+dockerd/+dockerd +cgroupfs-mount/' luci-app-docker*/Makefile
-        sed -i '$i /etc/init.d/dockerd restart &' luci-app-docker*/root/etc/uci-defaults/*
-        sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
-        sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
-        sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
-        sed -i 's/+vsftpd$/+vsftpd-alt/' luci-app-vsftpd/Makefile
-        sed -i 's/ +uhttpd-mod-ubus//' luci-app-packet-capture/Makefile
-        sed -i '/boot()/,+2d' ddns-scripts/files/etc/init.d/ddns
-        sed -i "/DISTRIB_DESCRIPTION/c\DISTRIB_DESCRIPTION=\"%D %C by kenzo'\"" base-files/files/etc/openwrt_release
-        sed -i 's?admin/status/channel_analysis??' luci-mod-status/root/usr/share/luci/menu.d/luci-mod-status.json
-        sed -i "/--disable-https/d" netdata/Makefile
-        sed -i -e '$a /etc/bench.log' \
-        -e '/\/etc\/profile/d' \
-        -e '/\/etc\/shinit/d' \
-        base-files/files/lib/upgrade/keep.d/base-files-essential
-        sed -i -e '/^\/etc\/profile/d' \
-        -e '/^\/etc\/shinit/d' \
-        base-files/Makefile
-        sed -i '$a cgi-timeout = 300' uwsgi/files-luci-support/luci-webui.ini
-        sed -i '$a cgi-timeout = 60' uwsgi/files-luci-support/luci-cgi_io.ini
-        sed -i '/limit-as/c\limit-as = 5000' uwsgi/files-luci-support/luci-webui.ini
-        sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/' uwsgi/files/uwsgi.init
-        sed -i 's/	ip.neighbors/	luci.ip.neighbors/' luci-app-wifidog/luasrc/model/cbi/wifidog/wifidog_cfg.lua
-        cp -rf base-files/files/sbin/sysupgrade my-default-settings/files/sbin/
-        
-        sed -i \
-          -e 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?' \
-          -e "s/\(PKG_HASH\|PKG_MD5SUM\|PKG_MIRROR_HASH\):=.*/\1:=skip/" \
-          -e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?' \
-          -e 's/ca-certificates/ca-bundle/' \
-          */Makefile
-        
-        while [[ ! -f /tmp/ok ||  ! -f /tmp/ok2 ]]; do
-            echo "wait"
-          sleep 1
-        done
 
     - name: Upload
+      env: 
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
+        [ -e $GITHUB_WORKSPACE/LICENSE ] && cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}
+        [ -e $GITHUB_WORKSPACE/README.md ] && cp $GITHUB_WORKSPACE/README.md $GITHUB_WORKSPACE/${{matrix.target}}
+        cd $GITHUB_WORKSPACE/${{matrix.target}}
         git add .
-        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
-        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done
-        git reset --soft HEAD^
-        git add .
-        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
-        git push -f
-
+        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
+        git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/kenzok78/small-package.git" HEAD:${{matrix.target}}
+        
+        
     - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      continue-on-error: true
+      uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 0
+
+
