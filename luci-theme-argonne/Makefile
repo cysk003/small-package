@@ -8,8 +8,6 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=Argonne kenzo
 LUCI_DEPENDS:=
-PKG_VERSION:=2.3.0
-PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

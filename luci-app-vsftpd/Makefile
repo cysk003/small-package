@@ -10,8 +10,6 @@ LUCI_DEPENDS:=+vsftpd-alt
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-vsftpd
-PKG_VERSION:=1.0
-PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
