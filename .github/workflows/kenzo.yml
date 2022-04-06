@@ -206,23 +206,24 @@ jobs:
 
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
+        $GITHUB_WORKSPACE/diy/Modify.sh
 
     - name: Upload
-      env: 
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
-        [ -e $GITHUB_WORKSPACE/LICENSE ] && cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}
-        [ -e $GITHUB_WORKSPACE/README.md ] && cp $GITHUB_WORKSPACE/README.md $GITHUB_WORKSPACE/${{matrix.target}}
-        cd $GITHUB_WORKSPACE/${{matrix.target}}
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
-        git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/kenzok78/small-package.git" HEAD:${{matrix.target}}
-        
-        
+        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
+        done
+        git reset --soft HEAD^
+        git add .
+        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
+        git push -f
+
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
+      continue-on-error: true
       with:
         retain_days: 1
         keep_minimum_runs: 0
+
 
 
