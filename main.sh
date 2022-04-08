@@ -1,8 +1,5 @@
 #!/bin/bash
-shopt -s extglob
-git rm -r --cache * >/dev/null 2>&1 &
-rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
-function git_sparse_clone() (
+function git_sparse_clone() {
 branch="$1" rurl="$2" localdir="$3" && shift 3
 git clone -b $branch --depth 1 --filter=blob:none --sparse $rurl $localdir
 cd $localdir
@@ -11,7 +8,8 @@ git sparse-checkout set $@
 mv -n $@ ../
 cd ..
 rm -rf $localdir
-)
+}
+
 function mvdir() {
 mv -n `find $1/* -maxdepth 0 -type d` ./
 rm -rf $1
@@ -45,7 +43,7 @@ git clone --depth 1 https://github.com/rufengsuixing/luci-app-usb3disable
 git clone --depth 1 https://github.com/riverscn/openwrt-iptvhelper && mvdir openwrt-iptvhelper
 git clone --depth 1 https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk
 git clone --depth 1 https://github.com/NateLol/luci-app-beardropper
-git clone --depth 1 https://github.com/iwrt/luci-app-ikoolproxy  && rm -rf *.log *.doc
+git clone --depth 1 https://github.com/yaof2/luci-app-ikoolproxy
 git clone --depth 1 https://github.com/project-lede/luci-app-godproxy
 
 git clone --depth 1 https://github.com/tty228/luci-app-serverchan
@@ -100,8 +98,8 @@ svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-aliddns
 svn co https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns
 svn co https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-cos/trunk/tencentcloud_cos luci-app-tencentcloud-cos
 svn co https://github.com/kenzok8/jell/trunk/luci-app-adguardhome
+svn co https://github.com/kenzok8/jell/trunk/luci-app-fileassistant
 svn co https://github.com/kenzok8/jell/trunk/adguardhome
-svn co https://github.com/kenzok8/jell/trunk/v2ray-plugin
 svn co https://github.com/kenzok8/jell/trunk/smartdns
 svn co https://github.com/kenzok8/litte/trunk/luci-theme-atmaterial_new
 svn co https://github.com/kenzok8/litte/trunk/luci-theme-mcat
@@ -154,13 +152,10 @@ net/openvpn utils/cgroupfs-mount utils/coremark net/xray-core net/nginx net/uwsg
 git_sparse_clone openwrt-21.02 "https://github.com/openwrt/openwrt" "21openwrt" package/libs/mbedtls \
 
 mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
-mv -n applications/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf applications
-mv -n lean/* ./ ; rm -Rf lean
 mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
-cp -rf diy/.packages/* ./ || true
 
-rm -Rf */.git
 rm -rf ./*/.git & rm -f ./*/.gitattributes
 rm -rf ./*/.svn & rm -rf ./*/.github & rm -rf ./*/.gitignore
 
 exit 0
+
