@@ -14,9 +14,9 @@ PKG_HASH:=53b66788e8d7c7abbab43c6275fa1c3b2316e56e46f7a093f2f4dfb397549bb2
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
 
-include ../../lang/python/pypi.mk
+include $(TOPDIR)/feeds/packages/lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
-include ../../lang/python/python3-package.mk
+include $(TOPDIR)/feeds/packages/lang/python/python3-package.mk
 
 define Package/bpytop
   SECTION:=admin
