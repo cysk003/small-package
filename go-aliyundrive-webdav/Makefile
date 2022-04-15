@@ -24,7 +24,7 @@ GO_PKG:=go-aliyun-webdav
 GO_PKG_LDFLAGS_X:=main.Version=v$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
+include ../../lang/golang/golang-package.mk
 
 define Package/go-aliyundrive-webdav
   SECTION:=net
